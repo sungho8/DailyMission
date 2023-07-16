@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "787312982481",
+    "project_id": "dailymission-2f956",
+    "storage_bucket": "dailymission-2f956.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787312982481:android:74493521919966844048f0",
+        "android_client_info": {
+          "package_name": "com.moong.dailymission"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "787312982481-gjnb9i7st9e3pk75p1gtup1gh0jstppf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moong.dailymission",
+            "certificate_hash": "c9186ca39f2d2c57b69fbd1ca3af32f637650077"
+          }
+        },
+        {
+          "client_id": "787312982481-aaaacd0g184h9ms8mtqvg1sr99ta99df.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7Eli_QdSoYEMWn8j3W0PX4RK-fPx0mhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "787312982481-aaaacd0g184h9ms8mtqvg1sr99ta99df.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
