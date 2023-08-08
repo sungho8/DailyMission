@@ -34,12 +34,9 @@ class MainActivity : AppCompatActivity() {
     private fun setObserver(){
         model.mutableData.observe(this, Observer {
             val list = model.mutableData.value
-
-
-
             val adapter= MissionAdapter()
             adapter.data = list ?: mutableListOf()
-            binding.missionList.adapter= adapter
+            binding.missionList.adapter = adapter
         })
     }
 }
