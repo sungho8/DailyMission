@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.moong.dailymission.R
 import com.moong.dailymission.databinding.ActivityLoginBinding
+import com.moong.dailymission.util.GlobalApplication
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,11 +35,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        googleLogin()
+        firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth.signOut()
+
+        checkLogin()
 
         binding.run {
-            loginBtn.setOnClickListener {
+            googleLoginBtn.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch {
+                    googleLogin()
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(getString(R.string.default_web_client_id))
                         .requestEmail()
@@ -48,11 +53,22 @@ class LoginActivity : AppCompatActivity() {
                     launcher.launch(signInIntent)
                 }
             }
+
+            anonymousLoginBtn.setOnClickListener {
+                anonymousLogin()
+            }
+        }
+    }
+
+    // 자동로그인
+    private fun checkLogin(){
+        val currentUid = GlobalApplication.prefs.getString("uid")
+        if(currentUid.isNotEmpty()){
+            goMainActivity()
         }
     }
 
     private fun googleLogin(){
-        firebaseAuth = FirebaseAuth.getInstance()
         launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(), ActivityResultCallback { result ->
                 if (result.resultCode == RESULT_OK) {
@@ -86,7 +102,29 @@ class LoginActivity : AppCompatActivity() {
             })
     }
 
+    private fun anonymousLogin(){
+        val user = firebaseAuth.currentUser
+        var userId = ""
+
+        if(user != null){ // 이미 가입한 회원인 경우
+            userId = user.uid // uid를 가져온다.
+        }else{
+            // 익명으로 가입한다.
+            firebaseAuth.signInAnonymously().addOnCompleteListener(this){ task ->
+                    if(task.isSuccessful){ // 가입 성공한 경우
+                        userId = firebaseAuth.currentUser!!.uid
+                    }else{
+                        // 가입 실패한 경우
+                    }
+                }
+        }
+        if(userId.isNotEmpty()){
+            goMainActivity()
+        }
+    }
+
     private fun goMainActivity(){
+        firebaseAuth.currentUser?.uid?.let { GlobalApplication.prefs.setString("uid", it) }
         Intent(applicationContext, MainActivity::class.java).run { startActivity(this) }
     }
 }
