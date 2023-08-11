@@ -17,4 +17,22 @@ class MainViewModel : ViewModel() {
             mutableData.value = it
         }
     }
+
+     fun getRandomMission(){
+        val randomList = ArrayList<Int>()
+        val size = 4    // 현재 존재하는 총 미션
+
+        // 기존에 없던 새로운 난수를 생성
+        while(randomList.size != size){
+            val r = (0..size-1).random()
+            if(r !in randomList){
+                randomList.add(r)
+                break
+            }
+        }
+
+        FireBaseManager.getTodayMission(randomList).observeForever {
+            mutableData.value = it
+        }
+    }
 }

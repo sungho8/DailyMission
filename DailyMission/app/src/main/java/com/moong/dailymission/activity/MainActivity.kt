@@ -1,22 +1,17 @@
 package com.moong.dailymission.activity
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import com.moong.dailymission.R
 import com.moong.dailymission.adapter.MissionAdapter
 import com.moong.dailymission.databinding.ActivityMainBinding
-import com.moong.dailymission.model.Mission
 import com.moong.dailymission.util.FireBaseManager
+import com.moong.dailymission.util.GlobalApplication
 import com.moong.dailymission.viewmodel.MainViewModel
+import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy{ ActivityMainBinding.inflate(layoutInflater) }
@@ -28,7 +23,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         model = ViewModelProvider(this).get(MainViewModel::class.java)
 
+        setTodayRandom()
+        setListener()
         setObserver()
+    }
+
+    fun setListener(){
+        binding.newTodayMission.setOnClickListener {
+            model.getRandomMission()
+        }
+    }
+
+    private fun setTodayRandom(){
+        val now = LocalDate.now().toString()
+        val today = GlobalApplication.prefs.getString("today","")
+
+        // 하루가 지났다면 새로운 난수를 생성
+        if(now != today){
+//            val size = GlobalApplication.prefs.getInt("size")
+//            GlobalApplication.prefs.setString("today",now)
+//            GlobalApplication.prefs.setInt("random",(0..size).random())
+            model.getRandomMission()
+        }
     }
 
     private fun setObserver(){
