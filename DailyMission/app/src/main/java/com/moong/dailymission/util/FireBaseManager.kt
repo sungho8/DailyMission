@@ -16,21 +16,12 @@ import com.moong.dailymission.model.Mission
 import com.moong.dailymission.model.User
 
 object FireBaseManager {
-    private val database by lazy { FirebaseDatabase.getInstance() }
-    private val ref = database.getReference("mission")
     private val store by lazy{ FirebaseFirestore.getInstance() }
 
     fun setUser(user : User){
         val uid = GlobalApplication.prefs.getString("uid")
-        val mission = hashMapOf(
-            "title" to "",
-            "done" to false,
-            "count" to 102
-        )
-
         user.uid = uid
-        Log.d("FireBaseManager","${uid} ${mission}")
-        store.collection("User").document(uid).set(mission)
+        store.collection("User").document(uid).set(user)
             .addOnSuccessListener { Log.d("FireBaseManager","성공") }
             .addOnFailureListener { Log.d("FireBaseManager","실패") }
     }

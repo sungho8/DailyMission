@@ -4,12 +4,25 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.moong.dailymission.model.Mission
+import com.moong.dailymission.model.User
 import com.moong.dailymission.util.FireBaseManager
 import com.moong.dailymission.util.GlobalApplication
 import java.time.LocalDate
 
 class MainViewModel : ViewModel() {
     val mutableData = MutableLiveData<MutableList<Mission>>()
+
+    init {
+        setUser()
+    }
+    fun setUser(){
+        val user = User(
+            uid = GlobalApplication.prefs.getString("uid"),
+            dailyMission = arrayListOf(),
+            todayMission = arrayListOf(Mission(title = "dd")),
+        )
+        FireBaseManager.setUser(user)
+    }
 
     fun setTodayRandom(){
         val now = LocalDate.now().toString()
