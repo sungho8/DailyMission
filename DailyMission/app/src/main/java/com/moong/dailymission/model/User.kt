@@ -1,6 +1,7 @@
 package com.moong.dailymission.model
 
 data class User(
-    val dailyMission : ArrayList<Mission>,
+    var uid : String,
+    var dailyMission : ArrayList<Mission>,
     val todayMission : ArrayList<Mission>
 )

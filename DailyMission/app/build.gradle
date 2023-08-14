@@ -65,4 +65,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // gson
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }

@@ -1,16 +1,14 @@
 package com.moong.dailymission.activity
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.moong.dailymission.adapter.MissionAdapter
 import com.moong.dailymission.databinding.ActivityMainBinding
-import com.moong.dailymission.util.FireBaseManager
 import com.moong.dailymission.util.GlobalApplication
 import com.moong.dailymission.viewmodel.MainViewModel
+import org.json.JSONArray
 import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
@@ -23,27 +21,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         model = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        setTodayRandom()
+        // 매일매일 최초접속시 새로운 난수를 생성후 미션 하나 할당
+        model.setTodayRandom()
+        model.getTodayMission()
+
         setListener()
         setObserver()
     }
 
-    fun setListener(){
+    private fun setListener(){
         binding.newTodayMission.setOnClickListener {
-            model.getRandomMission()
-        }
-    }
-
-    private fun setTodayRandom(){
-        val now = LocalDate.now().toString()
-        val today = GlobalApplication.prefs.getString("today","")
-
-        // 하루가 지났다면 새로운 난수를 생성
-        if(now != today){
-//            val size = GlobalApplication.prefs.getInt("size")
-//            GlobalApplication.prefs.setString("today",now)
-//            GlobalApplication.prefs.setInt("random",(0..size).random())
-            model.getRandomMission()
+            model.addTodayMission()
         }
     }
 
